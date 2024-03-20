@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: movie-service
-        image: localhost:5000/movie-service:1.0
+        image: julienvb/labo:movie-service-1.0
         ports:
         - containerPort: 8000
         env:
