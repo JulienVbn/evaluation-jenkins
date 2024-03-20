@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cast-service-deployment
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: cast-service
+  template:
+    metadata:
+      labels:
+        app: cast-service
+    spec:
+      containers:
+      - name: cast-service
+        image: localhost:5000/cast-service:1.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URI
+          value: "postgresql://cast_db_username:cast_db_password@cast_db/cast_db_dev"
+        volumeMounts:
+        - name: cast-service-data-dev
+          mounthPath: /app
+      volumes:
+      - name: cast-service-data-dev
+        persistentVolumeClaim:
+          claimName: cast-service-claim-dev
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cast-service-service
+  namespace: dev
+spec:
+  selector:
+    app: cast-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000

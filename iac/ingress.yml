@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dev-ingress
+  namespace: dev
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: cast.dev.labo
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+             service:
+              name: cast-db-service
+              port:
+                number: 80
+  - host: movie.dev.labo
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+             service:
+              name: movie-service-service
+              port:
+                number: 80

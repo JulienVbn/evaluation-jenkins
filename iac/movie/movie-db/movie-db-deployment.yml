@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movie-db-deployment
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: movie-db
+  template:
+    metadata:
+      labels:
+        app: movie-db
+    spec:
+      containers:
+      - name: movie-db
+        image: postgres:12.1-alpine
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POSTGRES_USER
+          value: "movie_db_username"
+        - name: POSTGRES_PASSWORD
+          value: "movie_db_password"
+        - name: POSTGRES_DB
+          value: "movie_db_dev"
+        volumeMounts:
+        - name: movie-db-data-dev
+          mounthPath: /var/lib/postgresql/data
+      volumes:
+      - name: movie-db-data-dev
+        persistentVolumeClaim:
+          claimName: movie-db-claim-dev
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: movie-db-service
+  namespace: dev
+spec:
+  selector:
+    app: movie-db
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
