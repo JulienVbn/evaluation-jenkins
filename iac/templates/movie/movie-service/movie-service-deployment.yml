@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: movie-service-deployment
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -19,23 +19,23 @@ spec:
         - containerPort: 8000
         env:
         - name: DATABASE_URI
-          value: "postgresql://movie_db_username:movie_db_password@movie_db/movie_db_dev"
+          value: "postgresql://movie_db_username:movie_db_password@movie_db/movie_db_{{ .Values.namespace }}"
         - name: CAST_SERVICE_HOST_UR
           value: "http://cast_service:8000/api/v1/casts/"
         volumeMounts:
-        - name: movie-service-data-dev
+        - name: movie-service-data-{{ .Values.namespace }}
           mounthPath: /app
       volumes:
-      - name: movie-service-data-dev
+      - name: movie-service-data-{{ .Values.namespace }}
         persistentVolumeClaim:
-          claimName: movie-service-claim-dev
+          claimName: movie-service-claim-{{ .Values.namespace }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: movie-service-service
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: movie-service

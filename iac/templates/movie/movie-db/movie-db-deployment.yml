@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: movie-db-deployment
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -23,21 +23,21 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "movie_db_password"
         - name: POSTGRES_DB
-          value: "movie_db_dev"
+          value: "movie_db_{{ .Values.namespace }}"
         volumeMounts:
-        - name: movie-db-data-dev
+        - name: movie-db-data-{{ .Values.namespace }}
           mounthPath: /var/lib/postgresql/data
       volumes:
-      - name: movie-db-data-dev
+      - name: movie-db-data-{{ .Values.namespace }}
         persistentVolumeClaim:
-          claimName: movie-db-claim-dev
+          claimName: movie-db-claim-{{ .Values.namespace }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: movie-db-service
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: movie-db

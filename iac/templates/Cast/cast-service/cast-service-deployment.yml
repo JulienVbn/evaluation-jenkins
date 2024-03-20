@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cast-service-deployment
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -19,21 +19,21 @@ spec:
         - containerPort: 8000
         env:
         - name: DATABASE_URI
-          value: "postgresql://cast_db_username:cast_db_password@cast_db/cast_db_dev"
+          value: "postgresql://cast_db_username:cast_db_password@cast_db/cast_db_{{ .Values.namespace }}"
         volumeMounts:
-        - name: cast-service-data-dev
+        - name: cast-service-data-{{ .Values.namespace }}
           mounthPath: /app
       volumes:
-      - name: cast-service-data-dev
+      - name: cast-service-data-{{ .Values.namespace }}
         persistentVolumeClaim:
-          claimName: cast-service-claim-dev
+          claimName: cast-service-claim-{{ .Values.namespace }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: cast-service-service
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: cast-service

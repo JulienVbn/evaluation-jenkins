@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: movie-service-data-dev
+  name: movie-service-data-{{ .Values.namespace }}
 spec:
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/evaluation/dev/postgres_data_movie"
+    path: "/mnt/evaluation/{{ .Values.namespace }}/postgres_data_movie"
   storageClassName: manual
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: movie-db-claim-dev
-  namespace: dev
+  name: movie-db-claim-{{ .Values.namespace }}
+  namespace: {{ .Values.namespace }}
 spec:
   storageClassName: manual
   accessModes:

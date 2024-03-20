@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cast-db-deployment
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -23,21 +23,21 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "cast_db_password"
         - name: POSTGRES_DB
-          value: "cast_db_dev"
+          value: "cast_db_{{ .Values.namespace }}"
         volumeMounts:
-        - name: cast-db-data-dev
+        - name: cast-db-data-{{ .Values.namespace }}
           mounthPath: /var/lib/postgresql/data
       volumes:
-      - name: cast-dbdata-dev
+      - name: cast-dbdata-{{ .Values.namespace }}
         persistentVolumeClaim:
-          claimName: cast-db-claim-dev
+          claimName: cast-db-claim-{{ .Values.namespace }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: cast-db-service
-  namespace: dev
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     app: cast-db
