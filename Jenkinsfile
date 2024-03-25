@@ -4,7 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'julienvb/labo'
         DOCKER_TAG = 'datascientest-project-cast-service'
-        DOCKER_CREDENTIALS_ID = 'julien-credentials'
+        DOCKER_USERNAME = 'julienvb'
+        DOCKER_PASSWORD = 'docker_hub_password'
     }
 
     stages {
@@ -29,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker login -u $DOCKER_CREDENTIALS_ID
+                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
                 }
