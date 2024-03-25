@@ -3,14 +3,14 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = 'julienvb/labo'
-        DOCKER_TAG = 'datascientest-project'
+        DOCKER_TAG = 'datascientest-project-cast-service'
         DOCKER_CREDENTIALS_ID = 'julien-credentials'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/JulienVbn/evaluation-jenkins.git'
+                git 'https://github.com/JulienVbn/evaluation-jenkins/tree/main/cast-service'
             }
         }
         
