@@ -10,13 +10,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/JulienVbn/evaluation-jenkins/tree/main/cast-service'
+                git 'https://github.com/JulienVbn/evaluation-jenkins.git'
             }
         }
         
         stage('Build Docker Image') {
             steps {
                 script {
+                    dir('cast-service/')
                     docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
                 }
             }
