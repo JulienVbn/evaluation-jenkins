@@ -17,9 +17,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dir('cast-service') {
-                        docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
-                    }
+                    sh '''
+                        cd cast-service
+                        docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                    '''
                 }
             }
         }
