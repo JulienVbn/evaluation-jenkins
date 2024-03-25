@@ -8,9 +8,9 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Git Checkout') {
             steps {
-                git 'https://github.com/JulienVbn/evaluation-jenkins.git'
+                url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
             }
         }
         
