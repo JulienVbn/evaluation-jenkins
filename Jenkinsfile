@@ -32,7 +32,6 @@ pipeline {
                     docker login -u $DOCKER_CREDENTIALS_ID
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
-                    }
                 }
             }
         }
