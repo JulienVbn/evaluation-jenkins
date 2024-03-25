@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        cd cast-service
-                        docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                    cd cast-service
+                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
                     '''
                 }
             }
@@ -28,8 +28,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+                    sh '''
+                    docker login -u $DOCKER_CREDENTIALS_ID
+                    docker push $DOCKER_IMAGE:$DOCKER_TAG
+                    '''
                     }
                 }
             }
