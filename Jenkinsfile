@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
+                git branch: 'main', url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
             }
         }
         
