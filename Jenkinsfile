@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD --password-stdin
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
                 }
