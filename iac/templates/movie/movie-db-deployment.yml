@@ -23,14 +23,14 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "movie_db_password"
         - name: POSTGRES_DB
-          value: "movie_db_{{ .Values.namespace }}"
+          value: {{ .Values.movie.dbName }}
         volumeMounts:
-        - name: movie-db-data-{{ .Values.namespace }}
+        - name: {{ .Values.namespace }}-movie-db-data
           mounthPath: /var/lib/postgresql/data
       volumes:
-      - name: movie-db-data-{{ .Values.namespace }}
+      - name: {{ .Values.namespace }}-movie-db-data
         persistentVolumeClaim:
-          claimName: movie-db-claim-{{ .Values.namespace }}
+          claimName: {{ .Values.namespace }}-movie-db-claim
       restartPolicy: Always
 ---
 apiVersion: v1

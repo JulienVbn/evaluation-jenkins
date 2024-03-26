@@ -14,21 +14,21 @@ spec:
     spec:
       containers:
       - name: movie-service
-        image: {{ .Values.movieServiceDeployment.image }}
+        image: {{ .Values.movieImage }}
         ports:
         - containerPort: 8000
         env:
         - name: DATABASE_URI
-          value: "postgresql://movie_db_username:movie_db_password@movie_db/movie_db_{{ .Values.namespace }}"
+          value: {{ .Values.movie.db }}
         - name: CAST_SERVICE_HOST_UR
-          value: "http://cast_service.{{ .Values.namespace }}/api/v1/casts/"
+          value: {{ .Values.movie.url }}
         volumeMounts:
-        - name: movie-service-data-{{ .Values.namespace }}
+        - name: {{ .Values.namespace }}-movie-service-data
           mounthPath: /app
       volumes:
-      - name: movie-service-data-{{ .Values.namespace }}
+      - name: {{ .Values.namespace }}-movie-service-data
         persistentVolumeClaim:
-          claimName: movie-service-claim-{{ .Values.namespace }}
+          claimName: {{ .Values.namespace }}-movie-service-claim
       restartPolicy: Always
 ---
 apiVersion: v1

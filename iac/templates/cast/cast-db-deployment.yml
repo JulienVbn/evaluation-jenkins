@@ -23,14 +23,14 @@ spec:
         - name: POSTGRES_PASSWORD
           value: "cast_db_password"
         - name: POSTGRES_DB
-          value: "cast_db_{{ .Values.namespace }}"
+          value: {{ .Values.cast.dbName }}
         volumeMounts:
-        - name: cast-db-data-{{ .Values.namespace }}
+        - name: {{ .Values.namespace }}-cast-db-data
           mounthPath: /var/lib/postgresql/data
       volumes:
-      - name: cast-dbdata-{{ .Values.namespace }}
+      - name: {{ .Values.namespace }}-cast-dbdata
         persistentVolumeClaim:
-          claimName: cast-db-claim-{{ .Values.namespace }}
+          claimName: {{ .Values.namespace }}-cast-db-claim
       restartPolicy: Always
 ---
 apiVersion: v1

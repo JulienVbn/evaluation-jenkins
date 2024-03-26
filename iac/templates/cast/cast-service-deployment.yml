@@ -14,19 +14,19 @@ spec:
     spec:
       containers:
       - name: cast-service
-        image: {{ .Values.castServiceDeployment.image }}
+        image: {{ .Values.castImage }}
         ports:
         - containerPort: 8000
         env:
         - name: DATABASE_URI
-          value: "postgresql://cast_db_username:cast_db_password@cast_db/cast_db_{{ .Values.namespace }}"
+          value: {{ .Values.cast.db }}
         volumeMounts:
-        - name: cast-service-data-{{ .Values.namespace }}
+        - name: {{ .Values.namespace }}-cast-service-data
           mounthPath: /app
       volumes:
-      - name: cast-service-data-{{ .Values.namespace }}
+      - name: {{ .Values.namespace }}-cast-service-data
         persistentVolumeClaim:
-          claimName: cast-service-claim-{{ .Values.namespace }}
+          claimName: {{ .Values.namespace }}-cast-service-claim
       restartPolicy: Always
 ---
 apiVersion: v1
