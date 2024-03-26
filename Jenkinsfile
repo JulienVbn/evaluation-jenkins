@@ -5,7 +5,6 @@ pipeline {
         DOCKER_IMAGE = 'julienvb/labo'
         DOCKER_TAG = 'datascientest-project-cast-service'
         DOCKER_USERNAME = 'julienvb'
-        DOCKER_PASSWORD = 'docker_hub_password'
     }
 
     stages {
@@ -28,6 +27,9 @@ pipeline {
         
         stage('Push Docker Image') {
             steps {
+                withCredentials([
+                    string(credentialsId: 'docker_hub_password', variable: 'DOCKER_PASSWORD')
+                ])
                 script {
                     sh '''
                     echo "$DOCKER_PASSWORD" > credentials.txt
