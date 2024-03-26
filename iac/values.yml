@@ -1,7 +1,7 @@
-movie-service-deployment:
-  containers:
+namespace: prod
+
+movieServiceDeployment:
     image: julienvb/labo:datascientest-project-movie-service
 
-cast-service-deployment:
-  containers:
+castServiceDeployment:
     image: julienvb/labo:datascientest-project-cast-service

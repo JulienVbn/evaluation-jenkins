@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cast-service
-        image: {{ .Values.cast-service-deployment.containers.image }}
+        image: {{ .Values.castServiceDeployment.image }}
         ports:
         - containerPort: 8000
         env:

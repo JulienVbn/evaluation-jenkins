@@ -60,7 +60,8 @@ pipeline {
             }
             steps {
                 sh '''
-                #mettre les infos de deploiement
+                cd iac
+                
                 '''
             }
         }

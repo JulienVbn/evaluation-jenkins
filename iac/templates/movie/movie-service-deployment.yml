@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: movie-service
-        image: {{ .Values.movie-service-deployment.containers.image }}
+        image: {{ .Values.movieServiceDeployment.image }}
         ports:
         - containerPort: 8000
         env:
