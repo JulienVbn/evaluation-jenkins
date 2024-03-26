@@ -3,7 +3,8 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = 'julienvb/labo'
-        DOCKER_TAG = 'datascientest-project-cast-service'
+        DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
+        DOCKER_TAG_MOVIE_SERVICE = 'datascientest-project-movie-service'
         DOCKER_USERNAME = 'julienvb'
     }
 
@@ -14,16 +15,27 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Build Docker Image - Cast Service') {
             steps {
                 script {
                     sh '''
                     cd cast-service
-                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE .
                     '''
                 }
             }
         }
+
+        stage('Build Docker Image - Movie Service') {
+            steps {
+                script {
+                    sh '''
+                    cd movie-service
+                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE .
+                    '''
+                }
+            }
+        }    
         
         stage('Push Docker Image') {
             steps {
@@ -34,7 +46,9 @@ pipeline {
                     sh '''
                     echo "$DOCKER_PASSWORD" > credentials.txt
                     cat credentials.txt | docker login -u $DOCKER_USERNAME --password-stdin
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG
+                    docker push $DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE
+                    docker push $DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE
+                    rm credentials.txt
                     '''
                 }
             }
