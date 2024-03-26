@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cast-service
-        image: julienvb/labo:cast-service-1.0
+        image: {{ .Values.cast-service-deployment.containers.image }}
         ports:
         - containerPort: 8000
         env:
