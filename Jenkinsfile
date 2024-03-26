@@ -30,7 +30,7 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'docker_hub_password', variable: 'DOCKER_PASSWORD')
                 ])
-                script {
+                {
                     sh '''
                     echo "$DOCKER_PASSWORD" > credentials.txt
                     cat credentials.txt | docker login -u $DOCKER_USERNAME --password-stdin
