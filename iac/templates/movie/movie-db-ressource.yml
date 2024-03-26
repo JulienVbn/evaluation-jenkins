@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.namespace }}-movie-service-data
+  name: {{ .Values.namespace }}-movie-db-data
 spec:
   capacity:
     storage: 1Gi

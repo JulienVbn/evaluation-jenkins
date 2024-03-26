@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: movie-service
-        image: {{ .Values.movieImage }}
+        image: {{ .Values.movie.image }}
         ports:
         - containerPort: 8000
         env:
@@ -24,7 +24,7 @@ spec:
           value: {{ .Values.movie.url }}
         volumeMounts:
         - name: {{ .Values.namespace }}-movie-service-data
-          mounthPath: /app
+          mountPath: /app
       volumes:
       - name: {{ .Values.namespace }}-movie-service-data
         persistentVolumeClaim:

@@ -2,7 +2,7 @@ namespace: prod
 
 movie:
   image: julienvb/labo:datascientest-project-movie-service
-  url: http://cast_service.prod/api/v1/casts/
+  url: prod.movie.service
   db: postgresql://movie_db_username:movie_db_password@movie_db/movie_db_prod
   serviceHostPath: /mnt/evaluation/prod/movie-service
   dbHostPath: /mnt/evaluation/prod/postgres_data_movie
@@ -10,7 +10,9 @@ movie:
 
 cast:
   image: julienvb/labo:datascientest-project-cast-service"
+  url: prod.cast.service
   db: postgresql://cast_db_username:cast_db_password@cast_db/cast_db_prod
   serviceHostPath: /mnt/evaluation/prod/cast-service
   dbHostPath: /mnt/evaluation/prod/postgres_data_cast
   dbName: cast_db_prod
+  ingressURL: prod-cast-service

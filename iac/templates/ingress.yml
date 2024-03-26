@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: cast_service.{{ .Values.namespace }}
+  - host: {{ .Values.cast.url }}
     http:
       paths:
         - path: /api/v1/casts
@@ -16,7 +16,7 @@ spec:
               name: cast-service-service
               port:
                 number: 80
-  - host: movie_service.{{ .Values.namespace }}
+  - host: {{ .Values.movie.url }}
     http:
       paths:
         - path: /api/v1/movies

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cast-service
-        image: {{ .Values.castImage }}
+        image: {{ .Values.cast.image }}
         ports:
         - containerPort: 8000
         env:
@@ -22,7 +22,7 @@ spec:
           value: {{ .Values.cast.db }}
         volumeMounts:
         - name: {{ .Values.namespace }}-cast-service-data
-          mounthPath: /app
+          mountPath: /app
       volumes:
       - name: {{ .Values.namespace }}-cast-service-data
         persistentVolumeClaim:

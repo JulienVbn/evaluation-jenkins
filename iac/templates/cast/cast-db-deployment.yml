@@ -26,9 +26,9 @@ spec:
           value: {{ .Values.cast.dbName }}
         volumeMounts:
         - name: {{ .Values.namespace }}-cast-db-data
-          mounthPath: /var/lib/postgresql/data
+          mountPath: /var/lib/postgresql/data
       volumes:
-      - name: {{ .Values.namespace }}-cast-dbdata
+      - name: {{ .Values.namespace }}-cast-db-data
         persistentVolumeClaim:
           claimName: {{ .Values.namespace }}-cast-db-claim
       restartPolicy: Always
