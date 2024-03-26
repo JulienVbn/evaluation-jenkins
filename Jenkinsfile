@@ -30,7 +30,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    cat $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+                    echo "$DOCKER_PASSWORD" > credentials.txt
+                    cat credentials.txt | docker login -u $DOCKER_USERNAME --password-stdin
                     docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
                 }
