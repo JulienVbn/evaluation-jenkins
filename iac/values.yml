@@ -1,0 +1,7 @@
+movie-service-deployment:
+  containers:
+    image: julienvb/labo:datascientest-project-movie-service
+
+cast-service-deployment:
+  containers:
+    image: julienvb/labo:datascientest-project-cast-service
