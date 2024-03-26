@@ -53,5 +53,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy for production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh '''
+                #mettre les infos de deploiement
+                '''
+            }
+        }
     }
 }
