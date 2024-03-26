@@ -9,7 +9,7 @@ movie:
   dbName: movie_db_prod
 
 cast:
-  image: julienvb/labo:datascientest-project-cast-service"
+  image: julienvb/labo:datascientest-project-cast-service
   url: prod.cast.service
   db: postgresql://cast_db_username:cast_db_password@cast_db/cast_db_prod
   serviceHostPath: /mnt/evaluation/prod/cast-service

@@ -15,6 +15,8 @@ spec:
       containers:
       - name: movie-service
         image: {{ .Values.movie.image }}
+      imagePullSecrets:
+      - name: credentials-docker
         ports:
         - containerPort: 8000
         env:
