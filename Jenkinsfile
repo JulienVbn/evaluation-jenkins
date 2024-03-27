@@ -61,7 +61,7 @@ pipeline {
                     def chartExists = sh(returnStdout: true, script: "helm list -q | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                     if (chartExists == 'true') {
                         echo "Suppression du chart existant..."
-                        sh "helm delete $chartName --kubeconfig /etc/rancher/k3s/k3s.yaml"
+                        sh "helm uninstall $chartName --kubeconfig /etc/rancher/k3s/k3s.yaml"
                     } else {
                         echo "Application du nouveau chart..."
                         sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml"
