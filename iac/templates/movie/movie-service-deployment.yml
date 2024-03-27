@@ -23,7 +23,7 @@ spec:
         - name: DATABASE_URI
           value: {{ .Values.movie.service.env.DATABASE_URI.value }}
         - name: CAST_SERVICE_HOST_URL
-          value: {{ .Values.cast.service.env.CAST_SERVICE_HOST_URL.value }}
+          value: {{ .Values.movie.service.env.CAST_SERVICE_HOST_URL.value }}
         volumeMounts:
         - name: {{ .Values.namespace }}-movie-service-data
           mountPath: /app
