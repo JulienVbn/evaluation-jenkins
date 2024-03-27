@@ -60,8 +60,7 @@ pipeline {
             }
             steps {
                 sh '''
-                cd iac
-                
+                helm install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
                 '''
             }
         }

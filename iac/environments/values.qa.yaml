@@ -3,7 +3,7 @@ namespace: qa
 movie:
   service:
     ingress:
-      url: qa-movie.service
+      url: qa-movie.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://movie_db_username:movie_db_password@qa-movie-db-service:80/movie_db_qa
@@ -23,7 +23,7 @@ movie:
 cast:
   service:
     ingress:
-      url: qa-cast.service
+      url: qa-cast.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://cast_db_username:cast_db_password@qa-cast-db-service:80/cast_db_qa

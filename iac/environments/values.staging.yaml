@@ -3,7 +3,7 @@ namespace: staging
 movie:
   service:
     ingress:
-      url: staging-movie.service
+      url: staging-movie.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://movie_db_username:movie_db_password@staging-movie-db-service:80/movie_db_staging
@@ -23,7 +23,7 @@ movie:
 cast:
   service:
     ingress:
-      url: staging-cast.service
+      url: staging-cast.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://cast_db_username:cast_db_password@staging-cast-db-service:80/cast_db_staging

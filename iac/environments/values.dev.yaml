@@ -3,7 +3,7 @@ namespace: dev
 movie:
   service:
     ingress:
-      url: dev-movie.service
+      url: dev-movie.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://movie_db_username:movie_db_password@dev-movie-db-service:80/movie_db_dev
@@ -23,7 +23,7 @@ movie:
 cast:
   service:
     ingress:
-      url: dev-cast.service
+      url: dev-cast.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://cast_db_username:cast_db_password@dev-cast-db-service:80/cast_db_dev

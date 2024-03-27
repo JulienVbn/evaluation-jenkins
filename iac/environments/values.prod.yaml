@@ -3,7 +3,7 @@ namespace: prod
 movie:
   service:
     ingress:
-      url: prod-movie.service
+      url: prod-movie.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://movie_db_username:movie_db_password@prod-movie-db-service:80/movie_db_prod
@@ -23,7 +23,7 @@ movie:
 cast:
   service:
     ingress:
-      url: prod-cast.service
+      url: prod-cast.vambalthoven.cloudns.biz
     env:
       DATABASE_URI:
         value: postgresql://cast_db_username:cast_db_password@prod-cast-db-service:80/cast_db_prod
