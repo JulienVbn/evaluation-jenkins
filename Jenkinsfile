@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
                     def chartName = 'datascientest-evaluation-prod'
-                    def chartExists = sh(returnStdout: true, script: "helm list -q | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
+                    def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig /etc/rancher/k3s/k3s.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                     if (chartExists == 'true') {
                         echo "Suppression du chart existant..."
                         sh "helm uninstall $chartName --kubeconfig /etc/rancher/k3s/k3s.yaml"
