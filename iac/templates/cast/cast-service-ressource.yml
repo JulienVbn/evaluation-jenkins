@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: {{ .Values.cast.serviceHostPath }}
+    path: {{ .Values.cast.persistentVolume.serviceData.path }}
   storageClassName: manual
 ---
 apiVersion: v1

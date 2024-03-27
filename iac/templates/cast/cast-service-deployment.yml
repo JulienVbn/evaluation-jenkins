@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
       - name: cast-service
-        image: {{ .Values.cast.image }}
+        image: {{ .Values.cast.service.image }}
       imagePullSecrets:
       - name: credentials-docker
         ports:
         - containerPort: 8000
         env:
         - name: DATABASE_URI
-          value: {{ .Values.cast.db }}
+          value: {{ .Values.cast.service.env.DATABASE_URI.value }}
         volumeMounts:
         - name: {{ .Values.namespace }}-cast-service-data
           mountPath: /app

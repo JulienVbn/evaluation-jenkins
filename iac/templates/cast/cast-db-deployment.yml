@@ -19,11 +19,11 @@ spec:
         - containerPort: 8080
         env:
         - name: POSTGRES_USER
-          value: "cast_db_username"
+          value: {{ .Values.cast.db.env.POSTGRES_USER.value }}
         - name: POSTGRES_PASSWORD
-          value: "cast_db_password"
+          value: {{ .Values.cast.db.env.POSTGRES_PASSWORD.value }}
         - name: POSTGRES_DB
-          value: {{ .Values.cast.dbName }}
+          value: {{ .Values.cast.db.env.POSTGRES_DB.value }}
         volumeMounts:
         - name: {{ .Values.namespace }}-cast-db-data
           mountPath: /var/lib/postgresql/data

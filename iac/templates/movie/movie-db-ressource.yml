@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: {{ .Values.movie.dbHostPath }}
+    path: {{ .Values.movie.db.persistentVolume.dbData.path }}
   storageClassName: manual
 ---
 apiVersion: v1

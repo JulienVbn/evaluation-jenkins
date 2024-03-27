@@ -19,11 +19,11 @@ spec:
         - containerPort: 8080
         env:
         - name: POSTGRES_USER
-          value: "movie_db_username"
+          value: {{ .Values.movie.db.env.POSTGRES_USER.value }}
         - name: POSTGRES_PASSWORD
-          value: "movie_db_password"
+          value: {{ .Values.movie.db.env.POSTGRES_PASSWORD.value }}
         - name: POSTGRES_DB
-          value: {{ .Values.movie.dbName }}
+          value: {{ .Values.movie.db.env.POSTGRES_DB.value }}
         volumeMounts:
         - name: {{ .Values.namespace }}-movie-db-data
           mountPath: /var/lib/postgresql/data
