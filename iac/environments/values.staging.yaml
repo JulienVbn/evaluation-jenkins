@@ -1,0 +1,40 @@
+namespace: staging
+
+movie:
+  service:
+    ingress:
+      url: staging-movie.service
+    env:
+      DATABASE_URI:
+        value: postgresql://movie_db_username:movie_db_password@staging-movie-db-service:80/movie_db_staging
+      CAST_SERVICE_HOST_URL:
+        value: staging-cast-service-service
+  db:
+    env:
+      POSTGRES_DB:
+        value: movie_db_staging
+    data:
+      volumeMounts:
+        name: staging-moviedbdata-pv
+      persistentVolumeClaim:
+        name: staging-moviedbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/staging/movie/db/"
+cast:
+  service:
+    ingress:
+      url: staging-cast.service
+    env:
+      DATABASE_URI:
+        value: postgresql://cast_db_username:cast_db_password@staging-cast-db-service:80/cast_db_staging
+  db:
+    env:
+      POSTGRES_DB:
+        value: cast_db_staging
+    data:
+      volumeMounts:
+        name: staging-castdbdata-pv
+      persistentVolumeClaim:
+        name: staging-castdbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/staging/cast/db/"

@@ -1,44 +1,20 @@
-namespace: prod
-
 movie:
   service:
-    ingress:
-      url: prod-movie.service
-    image: localhost:5000/movie-service:1
-    env:
-      DATABASE_URI:
-        value: postgresql://movie_db_username:movie_db_password@movie-db-service:80/movie_db_prod
-      CAST_SERVICE_HOST_URL:
-        value: prod-cast-service-service
-    data:
-      path: "/movie/prod/service/"
+    image: localhost:5000/movie-service:4
   db:
+    image: postgres:12.1-alpine
     env:
       POSTGRES_USER:
         value: movie_db_username
       POSTGRES_PASSWORD:
         value: movie_db_password
-      POSTGRES_DB:
-        value: movie_db_prod
-    data:
-      path: "/movie/prod/db/"
 cast:
   service:
-    ingress:
-      url: prod-cast.service
-    image: localhost:5000/cast-service:1
-    env:
-      DATABASE_URI:
-        value: postgresql://cast_db_username:cast_db_password@cast-db-service:80/cast_db_prod
-    data:
-      path: "/cast/prod/service/"
+    image: localhost:5000/cast-service:4
   db:
+    image: postgres:12.1-alpine
     env:
       POSTGRES_USER:
         value: cast_db_username
       POSTGRES_PASSWORD:
         value: cast_db_password
-      POSTGRES_DB:
-        value: cast_db_prod
-    data:
-      path: "/cast/prod/db/"

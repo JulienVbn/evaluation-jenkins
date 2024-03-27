@@ -22,13 +22,6 @@ spec:
           value: {{ .Values.movie.service.env.DATABASE_URI.value }}
         - name: CAST_SERVICE_HOST_URL
           value: {{ .Values.movie.service.env.CAST_SERVICE_HOST_URL.value }}
-        volumeMounts:
-        - name: movieservicedata-pv
-          mountPath: ./app/
-      volumes:
-      - name: movieservicedata-pv
-        persistentVolumeClaim:
-          claimName: movieservicedata-pvc
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -43,31 +36,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8000
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: movieservicedata-pv
-spec:
-  capacity:
-    storage: 5Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/movie/prod/service/"
-  storageClassName: local-path
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: movieservicedata-pvc
-  namespace: {{ .Values.namespace }}
-spec:
-  volumeName: movieservicedata-pv
-  storageClassName: local-path
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi

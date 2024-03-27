@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: cast-db-deployment
+  name: cast-db-statefulset
   namespace: {{ .Values.namespace }}
 spec:
   selector:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: cast-db
-        image: postgres:12.1-alpine
+        image: {{ .Values.cast.db.image }}
         ports:
         - containerPort: 5432
         env:
@@ -25,18 +25,18 @@ spec:
         - name: POSTGRES_DB
           value: {{ .Values.cast.db.env.POSTGRES_DB.value }}
         volumeMounts:
-        - name: castdbdata-pv
+        - name: {{ .Values.cast.db.data.volumeMounts.name }}
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: castdbdata-pv
+      - name: {{ .Values.cast.db.data.volumeMounts.name }}
         persistentVolumeClaim:
-          claimName: castdbdata-pvc
+          claimName: {{ .Values.cast.db.data.persistentVolumeClaim.name }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cast-db-service
+  name: {{ .Values.namespace }}-cast-db-service
   namespace: {{ .Values.namespace }}
 spec:
   selector:
@@ -49,7 +49,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: castdbdata-pv
+  name: {{ .Values.cast.db.data.volumeMounts.name }}
 spec:
   capacity:
     storage: 5Gi
@@ -57,17 +57,17 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/cast/prod/db/"
-  storageClassName: local-path
+    path: {{ .Values.cast.db.data.hostPath.path }}
+  storageClassName: manual
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: castdbdata-pvc
+  name: {{ .Values.cast.db.data.persistentVolumeClaim.name }}
   namespace: {{ .Values.namespace }}
 spec:
-  volumeName: castdbdata-pv
-  storageClassName: local-path
+  volumeName: {{ .Values.cast.db.data.volumeMounts.name }}
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

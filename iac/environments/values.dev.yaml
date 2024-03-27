@@ -1,0 +1,40 @@
+namespace: dev
+
+movie:
+  service:
+    ingress:
+      url: dev-movie.service
+    env:
+      DATABASE_URI:
+        value: postgresql://movie_db_username:movie_db_password@dev-movie-db-service:80/movie_db_dev
+      CAST_SERVICE_HOST_URL:
+        value: dev-cast-service-service
+  db:
+    env:
+      POSTGRES_DB:
+        value: movie_db_dev
+    data:
+      volumeMounts:
+        name: dev-moviedbdata-pv
+      persistentVolumeClaim:
+        name: dev-moviedbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/dev/movie/db/"
+cast:
+  service:
+    ingress:
+      url: dev-cast.service
+    env:
+      DATABASE_URI:
+        value: postgresql://cast_db_username:cast_db_password@dev-cast-db-service:80/cast_db_dev
+  db:
+    env:
+      POSTGRES_DB:
+        value: cast_db_dev
+    data:
+      volumeMounts:
+        name: dev-castdbdata-pv
+      persistentVolumeClaim:
+        name: dev-castdbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/dev/cast/db/"

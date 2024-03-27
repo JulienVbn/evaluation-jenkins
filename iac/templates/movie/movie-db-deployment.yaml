@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: movie-db-deployment
+  name: movie-db-statefulset
   namespace: {{ .Values.namespace }}
 spec:
   selector:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: movie-db
-        image: postgres:12.1-alpine
+        image: {{ .Values.movie.db.image }}
         ports:
         - containerPort: 5432
         env:
@@ -25,18 +25,18 @@ spec:
         - name: POSTGRES_DB
           value: {{ .Values.movie.db.env.POSTGRES_DB.value }}
         volumeMounts:
-        - name: moviedbdata-pv
+        - name: {{ .Values.movie.db.data.volumeMounts.name }}
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: moviedbdata-pv
+      - name: {{ .Values.movie.db.data.volumeMounts.name }}
         persistentVolumeClaim:
-          claimName: moviedbdata-pvc
+          claimName: {{ .Values.movie.db.data.persistentVolumeClaim.name }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: movie-db-service
+  name: {{ .Values.namespace }}-movie-db-service
   namespace: {{ .Values.namespace }}
 spec:
   selector:
@@ -49,7 +49,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: moviedbdata-pv
+  name: {{ .Values.movie.db.data.volumeMounts.name }}
 spec:
   capacity:
     storage: 5Gi
@@ -57,17 +57,17 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/movie/prod/db/"
-  storageClassName: local-path
+    path: {{ .Values.movie.db.data.hostPath.path }}
+  storageClassName: manual
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: moviedbdata-pvc
+  name: {{ .Values.movie.db.data.persistentVolumeClaim.name }}
   namespace: {{ .Values.namespace }}
 spec:
-  volumeName: moviedbdata-pv
-  storageClassName: local-path
+  volumeName: {{ .Values.movie.db.data.volumeMounts.name }}
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

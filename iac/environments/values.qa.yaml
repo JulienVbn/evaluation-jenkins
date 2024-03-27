@@ -1,0 +1,40 @@
+namespace: qa
+
+movie:
+  service:
+    ingress:
+      url: qa-movie.service
+    env:
+      DATABASE_URI:
+        value: postgresql://movie_db_username:movie_db_password@qa-movie-db-service:80/movie_db_qa
+      CAST_SERVICE_HOST_URL:
+        value: qa-cast-service-service
+  db:
+    env:
+      POSTGRES_DB:
+        value: movie_db_qa
+    data:
+      volumeMounts:
+        name: qa-moviedbdata-pv
+      persistentVolumeClaim:
+        name: qa-moviedbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/qa/movie/db/"
+cast:
+  service:
+    ingress:
+      url: qa-cast.service
+    env:
+      DATABASE_URI:
+        value: postgresql://cast_db_username:cast_db_password@qa-cast-db-service:80/cast_db_qa
+  db:
+    env:
+      POSTGRES_DB:
+        value: cast_db_qa
+    data:
+      volumeMounts:
+        name: qa-castdbdata-pv
+      persistentVolumeClaim:
+        name: qa-castdbdata-pvc
+      hostPath:
+        path: "/datascientest-jenkins/qa/cast/db/"
