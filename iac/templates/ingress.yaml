@@ -9,20 +9,20 @@ spec:
   - host: {{ .Values.cast.service.ingress.url }}
     http:
       paths:
-        - path: /api/v1/casts
+        - path: /
           pathType: Prefix
           backend:
              service:
-              name: cast-service-service
+              name: {{ .Values.namespace }}-cast-service-service
               port:
                 number: 80
   - host: {{ .Values.movie.service.ingress.url }}
     http:
       paths:
-        - path: /api/v1/movies
+        - path: /
           pathType: Prefix
           backend:
              service:
-              name: movie-service-service
+              name: {{ .Values.namespace }}-movie-service-service
               port:
                 number: 80

@@ -16,7 +16,7 @@ spec:
       - name: cast-db
         image: postgres:12.1-alpine
         ports:
-        - containerPort: 8080
+        - containerPort: 5432
         env:
         - name: POSTGRES_USER
           value: {{ .Values.cast.db.env.POSTGRES_USER.value }}
@@ -25,12 +25,12 @@ spec:
         - name: POSTGRES_DB
           value: {{ .Values.cast.db.env.POSTGRES_DB.value }}
         volumeMounts:
-        - name: {{ .Values.namespace }}-cast-db-data
+        - name: castdbdata-pv
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: {{ .Values.namespace }}-cast-db-data
+      - name: castdbdata-pv
         persistentVolumeClaim:
-          claimName: {{ .Values.namespace }}-cast-db-claim
+          claimName: castdbdata-pvc
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -44,4 +44,32 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
+      targetPort: 5432
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: castdbdata-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/cast/prod/db/"
+  storageClassName: local-path
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: castdbdata-pvc
+  namespace: {{ .Values.namespace }}
+spec:
+  volumeName: castdbdata-pv
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

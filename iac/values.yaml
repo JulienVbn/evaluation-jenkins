@@ -3,16 +3,15 @@ namespace: prod
 movie:
   service:
     ingress:
-      url: prod.movie.service
-    image: julienvb/labo:datascientest-project-movie-service
+      url: prod-movie.service
+    image: localhost:5000/movie-service:1
     env:
       DATABASE_URI:
-        value: postgresql://movie_db_username:movie_db_password@movie_db/movie_db_prod
+        value: postgresql://movie_db_username:movie_db_password@movie-db-service:80/movie_db_prod
       CAST_SERVICE_HOST_URL:
-        value: http://prod.cast.service/api/v1/casts/
-    persistentVolume:
-      serviceData:
-        path: /mnt/evaluation/prod/movie-service
+        value: prod-cast-service-service
+    data:
+      path: "/movie/prod/service/"
   db:
     env:
       POSTGRES_USER:
@@ -21,21 +20,18 @@ movie:
         value: movie_db_password
       POSTGRES_DB:
         value: movie_db_prod
-    persistentVolume:
-      dbData:
-        path: /mnt/evaluation/prod/postgres_data_movie
-
+    data:
+      path: "/movie/prod/db/"
 cast:
   service:
     ingress:
-      url: prod.cast.service
-    image: julienvb/labo:datascientest-project-cast-service
+      url: prod-cast.service
+    image: localhost:5000/cast-service:1
     env:
       DATABASE_URI:
-        value: postgresql://cast_db_username:cast_db_password@cast_db/cast_db_prod
-    persistentVolume:
-      serviceData:
-        path: /mnt/evaluation/prod/cast-service
+        value: postgresql://cast_db_username:cast_db_password@cast-db-service:80/cast_db_prod
+    data:
+      path: "/cast/prod/service/"
   db:
     env:
       POSTGRES_USER:
@@ -44,6 +40,5 @@ cast:
         value: cast_db_password
       POSTGRES_DB:
         value: cast_db_prod
-    persistentVolume:
-      dbData:
-        path: /mnt/evaluation/prod/postgres_data_cast
+    data:
+      path: "/cast/prod/db/"
