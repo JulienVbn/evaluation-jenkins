@@ -56,7 +56,6 @@ pipeline {
         }
 
         stage('Deploy for production') {
-
             when {
                 $branch 'main'
             }
