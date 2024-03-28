@@ -62,8 +62,7 @@ pipeline {
                     def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                     if (chartExists == 'true') {
                         echo "Mise à jour du chart existant..."
-                        sh "helm uninstall $chartName --kubeconfig $kubeconfigPath"
-                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
+                        sh "helm upgrade -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
                     } else {
                         echo "Application du nouveau chart..."
                         sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
