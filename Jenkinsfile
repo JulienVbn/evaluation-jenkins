@@ -6,7 +6,13 @@ pipeline {
         DOCKER_USERNAME = 'julienvb'
     }
 
-    stages {       
+    stages {
+        stage('Git Checkout') {
+            steps {
+                url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
+            }
+        }
+        
         stage('Build Docker Image - Cast Service') {
             steps {
                 script {
