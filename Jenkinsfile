@@ -61,18 +61,18 @@ pipeline {
                 ]) {
                     script {
                         sh '''
-                        cat "$KUBECONFIG_FILE" > kubeconfig.yaml
-                        chmod 777 kubeconfig.yml
+                        cat "$KUBECONFIG_FILE" > k3s.yaml
+                        chmod 777 k3s.yml
                         '''
                         def chartName = 'datascientest-evaluation-prod'
-                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig kubeconfig.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
+                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig k3s.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                         if (chartExists == 'true') {
                             echo "Mise à jour du chart existant..."
-                            sh "helm uninstall $chartName --kubeconfig kubeconfig.yaml"
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig kubeconfig.yaml"
+                            sh "helm uninstall $chartName --kubeconfig k3s.yaml"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig k3s.yaml"
                         } else {
                             echo "Application du nouveau chart..."
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig kubeconfig.yaml"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig k3s.yaml"
                         }
                     }
                 }
