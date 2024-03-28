@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = 'julienvb/labo'
-        DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
-        DOCKER_TAG_MOVIE_SERVICE = 'datascientest-project-movie-service'
+        DOCKER_IMAGE = 'julienvb/datascientest'
+        DOCKER_TAG_CAST_SERVICE = 'cast-service'
+        DOCKER_TAG_MOVIE_SERVICE = 'movie-service'
         DOCKER_USERNAME = 'julienvb'
     }
 
