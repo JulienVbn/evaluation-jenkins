@@ -56,7 +56,7 @@ pipeline {
 
         stage('Deploy for production') {
             environment {
-                KUBECONFIG = credentials("kubeconfig")
+                KUBECONFIG = credentials("config")
             }
             steps {
                 script {
@@ -65,7 +65,7 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig .kube/config
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/
                 '''
                 }
             }
