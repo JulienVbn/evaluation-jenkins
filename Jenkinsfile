@@ -61,6 +61,7 @@ pipeline {
                 ]) {
                     script {
                         sh "echo \$KUBECONFIG_FILE > kubeconfig.yaml"
+                        sh "chmod 600 kubeconfig.yaml"
                         def chartName = 'datascientest-evaluation-prod'
                         def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig kubeconfig.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                         if (chartExists == 'true') {
