@@ -1,6 +1,4 @@
-pipeline {
-    agent any
-    
+pipeline { 
     environment {
         DOCKER_IMAGE = 'julienvb/labo'
         DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
@@ -8,13 +6,7 @@ pipeline {
         DOCKER_USERNAME = 'julienvb'
     }
 
-    stages {
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main', url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
-            }
-        }
-        
+    stages {       
         stage('Build Docker Image - Cast Service') {
             steps {
                 script {
@@ -54,11 +46,43 @@ pipeline {
             }
         }
 
-        stage('Deploy for production') {
+        stage('Deploy for qa') {
             steps {
                 script {
                 sh '''
-                cat $KUBECONFIG > .kube/config
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.qa.yaml datascientest-evaluation-qa iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                '''
+                }
+            }
+        }
+
+        stage('Deploy for staging') {
+            steps {
+                script {
+                sh '''
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.staging.yaml datascientest-evaluation-staging iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                '''
+                }
+            }
+        }
+
+        stage('Deploy for dev') {
+            steps {
+                script {
+                sh '''
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.dev.yaml datascientest-evaluation-dev iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                '''
+                }
+            }
+        }
+
+        stage('Deploy for production') {
+            steps {
+                    timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
+                    }
+                script {
+                sh '''
                 helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
                 '''
                 }
