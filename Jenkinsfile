@@ -6,7 +6,6 @@ pipeline {
         DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
         DOCKER_TAG_MOVIE_SERVICE = 'datascientest-project-movie-service'
         DOCKER_USERNAME = 'julienvb'
-        branch = 'main'
     }
 
     stages {
@@ -57,7 +56,7 @@ pipeline {
 
         stage('Deploy for production') {
             when {
-                branch 'main'
+                branch '**/main'
             }
             steps {
                 script {
