@@ -1,4 +1,6 @@
-pipeline { 
+pipeline {
+    agent any
+    
     environment {
         DOCKER_IMAGE = 'julienvb/labo'
         DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
