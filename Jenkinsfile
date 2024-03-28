@@ -55,17 +55,11 @@ pipeline {
         }
 
         stage('Deploy for production') {
-            environment {
-                KUBECONFIG = credentials("config")
-            }
             steps {
                 script {
                 sh '''
-                rm -Rf .kube
-                mkdir .kube
-                ls
                 cat $KUBECONFIG > .kube/config
-                helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig .kube/config
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s.k3s.yaml
                 '''
                 }
             }
