@@ -61,14 +61,14 @@ pipeline {
                 ]) {
                     script {
                         def chartName = 'datascientest-evaluation-prod'
-                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig /etc/rancher/k3s/k3s.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
+                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig \$KUBECONFIG_FILE | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                         if (chartExists == 'true') {
                             echo "Mise à jour du chart existant..."
-                            sh "helm uninstall $chartName --kubeconfig /etc/rancher/k3s/k3s.yaml"
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml"
+                            sh "helm uninstall $chartName --kubeconfig \$KUBECONFIG_FILE"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig \$KUBECONFIG_FILE"
                         } else {
                             echo "Application du nouveau chart..."
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $KUBECONFIG_FILE"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig \$KUBECONFIG_FILE"
                         }
                     }
                 }
