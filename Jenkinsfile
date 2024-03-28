@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
+                git branch: 'Master', url: 'https://github.com/JulienVbn/evaluation-jenkins.git'
             }
         }
         
@@ -56,17 +56,13 @@ pipeline {
 
         stage('Deploy for production') {
             steps {
-                script {
-                    def kubeconfigPath = '/etc/rancher/k3s/k3s.yaml'
-                    def chartName = 'datascientest-evaluation-prod'
-                    def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
-                    if (chartExists == 'true') {
-                        echo "Mise à jour du chart existant..."
-                        sh "helm upgrade -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
-                    } else {
-                        echo "Application du nouveau chart..."
-                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
+                    timeout(time: 15, unit: "MINUTES") {
+                    input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     }
+                script {
+                sh '''
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                '''
                 }
             }
         }
