@@ -60,11 +60,11 @@ pipeline {
                     input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     }
                 script {
-                sh '''
+                sh """
                 sed -i 's|${DOCKER_IMAGE}:${DOCKER_TAG_PROD_SERVICE}|&-prod|' iac/values.yaml
                 sed -i "s|${DOCKER_IMAGE}:${DOCKER_TAG_CAST_SERVICE}|&-prod|" iac/values.yaml
                 helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
-                '''
+                """
                 }
             }
         }
