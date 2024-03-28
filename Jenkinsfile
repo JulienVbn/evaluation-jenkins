@@ -57,7 +57,7 @@ pipeline {
         stage('Deploy for production') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')
+                    file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')
                 ]) {
                     script {
                         def chartName = 'datascientest-evaluation-prod'
