@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = 'julienvb/datascientest'
-        DOCKER_TAG_CAST_SERVICE = 'cast-service-prod'
-        DOCKER_TAG_MOVIE_SERVICE = 'movie-service-prod'
+        DOCKER_TAG_CAST_SERVICE = 'cast-service-staging'
+        DOCKER_TAG_MOVIE_SERVICE = 'movie-service-staging'
         DOCKER_USERNAME = 'julienvb'
     }
 
@@ -58,6 +58,8 @@ pipeline {
             steps {
                 script {
                 sh '''
+                sed -i 's|julienvb/datascientest:movie-service|&-staging|' iac/values.yaml
+                sed -i 's|julienvb/datascientest:cast-service|&-staging|' iac/values.yaml
                 helm upgrade --install -f iac/values.yaml -f iac/environments/values.staging.yaml datascientest-evaluation-staging iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
                 '''
                 }
