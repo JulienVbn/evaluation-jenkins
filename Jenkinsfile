@@ -63,7 +63,7 @@ pipeline {
                         def kubeconfigPath = '/etc/rancher/k3s/k3s.yaml'
                         def chartName = 'datascientest-evaluation-prod'
                         def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
-                        sh "chmod 777 $kubeconfigPath"
+                        sh "sudo chmod 777 $kubeconfigPath"
                         if (chartExists == 'true') {
                             echo "Mise à jour du chart existant..."
                             sh "helm uninstall $chartName --kubeconfig $kubeconfigPath"
