@@ -59,7 +59,6 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'Kubeconfig', variable: 'KUBECONFIG_FILE')
                 ])
-                {
                 script {
                     def kubeConfig = $KUBECONFIG_FILE
                     def chartName = 'datascientest-evaluation-prod'
@@ -72,7 +71,6 @@ pipeline {
                         echo "Application du nouveau chart..."
                         sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeConfig"
                     }
-                }
                 }
             }
         }
