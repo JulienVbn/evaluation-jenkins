@@ -55,6 +55,9 @@ pipeline {
         }
 
         stage('Deploy for production') {
+            when {
+                branch 'main'
+            }
             steps {
                 script {
                     def kubeconfigPath = '/etc/rancher/k3s/k3s.yaml'
