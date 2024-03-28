@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = 'julienvb/datascientest'
-        DOCKER_TAG_CAST_SERVICE = 'cast-service'
-        DOCKER_TAG_MOVIE_SERVICE = 'movie-service'
+        DOCKER_TAG_CAST_SERVICE = 'cast-service-prod'
+        DOCKER_TAG_MOVIE_SERVICE = 'movie-service-prod'
         DOCKER_USERNAME = 'julienvb'
     }
 
