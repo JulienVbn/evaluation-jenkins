@@ -70,7 +70,7 @@ pipeline {
                         sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml"
                     } else {
                         echo "Application du nouveau chart..."
-                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig kubeconfig.yaml"
+                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $KUBECONFIG_FILE"
                     }
                     sh "rm kubeconfig.yaml"
                 }
