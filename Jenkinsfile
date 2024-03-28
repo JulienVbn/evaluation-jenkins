@@ -6,6 +6,7 @@ pipeline {
         DOCKER_TAG_CAST_SERVICE = 'datascientest-project-cast-service'
         DOCKER_TAG_MOVIE_SERVICE = 'datascientest-project-movie-service'
         DOCKER_USERNAME = 'julienvb'
+        branch = 'main'
     }
 
     stages {
