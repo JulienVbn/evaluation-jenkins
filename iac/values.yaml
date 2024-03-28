@@ -1,6 +1,6 @@
 movie:
   service:
-    image: julienvb/labo:datascientest-project-movie-service
+    image: julienvb/datascientest:movie-service
   db:
     image: postgres:12.1-alpine
     env:
@@ -10,7 +10,7 @@ movie:
         value: movie_db_password
 cast:
   service:
-    image: julienvb/labo:datascientest-project-cast-service
+    image: julienvb/datascientest:cast-service
   db:
     image: postgres:12.1-alpine
     env:
