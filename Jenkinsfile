@@ -60,17 +60,17 @@ pipeline {
                     file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')
                 ]) {
                     script {
-                        def kubeconfigPath = "${env.WORKSPACE}/kubeconfig.yml"
+                        def kubeconfigPath = "${env.WORKSPACE}"
                         sh "cp $KUBECONFIG_FILE/kubeconfig.yml $kubeconfigPath"
                         def chartName = 'datascientest-evaluation-prod'
-                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
+                        def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath/kubeconfig.yml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                         if (chartExists == 'true') {
                             echo "Mise à jour du chart existant..."
-                            sh "helm uninstall $chartName --kubeconfig $kubeconfigPath"
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
+                            sh "helm uninstall $chartName --kubeconfig $kubeconfigPath/kubeconfig.yml"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath/kubeconfig.yml"
                         } else {
                             echo "Application du nouveau chart..."
-                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath"
+                            sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeconfigPath/kubeconfig.yml"
                         }
                     }
                 }
