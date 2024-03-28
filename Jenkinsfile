@@ -60,7 +60,7 @@ pipeline {
                     file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')
                 ]) {
                     script {
-                        def kubeconfigPath = "${env.WORKSPACE}/kubeconfig.yaml"
+                        def kubeconfigPath = "${env.WORKSPACE}/kubeconfig.yml"
                         sh "cp $KUBECONFIG_FILE $kubeconfigPath"
                         def chartName = 'datascientest-evaluation-prod'
                         def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig $kubeconfigPath | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
