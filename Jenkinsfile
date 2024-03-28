@@ -62,7 +62,7 @@ pipeline {
                     script {
                         sh '''
                         cat "$KUBECONFIG_FILE" > k3s.yaml
-                        chmod 777 k3s.yml
+                        chmod 777 k3s.yaml
                         '''
                         def chartName = 'datascientest-evaluation-prod'
                         def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig k3s.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
