@@ -61,8 +61,8 @@ pipeline {
                     }
                 script {
                 sh '''
-                sed -i "s/\(image: julienvb\/labo:datascientest-project-movie-service\)/\1-prod/" values.yml
-                sed -i "s/\(image: julienvb\/labo:datascientest-project-cast-service\)/\1-prod/" values.yml
+                sed -i "s/\\(image: $DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE\\)/\\1-prod/" values.yml
+                sed -i "s/\\(image: $DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE\\)/\\1-prod/" values.yml
                 helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
                 '''
                 }
