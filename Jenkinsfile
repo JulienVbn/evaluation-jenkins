@@ -61,7 +61,7 @@ pipeline {
                 ])
                 {
                 script {
-                    sh "echo $KUBECONFIG_FILE > kubeconfig.yaml"
+                    def kubeConfig = $KUBECONFIG_FILE
                     def chartName = 'datascientest-evaluation-prod'
                     def chartExists = sh(returnStdout: true, script: "helm list -q --kubeconfig /etc/rancher/k3s/k3s.yaml | grep -q '^$chartName' && echo 'true' || echo 'false'").trim()
                     if (chartExists == 'true') {
@@ -70,9 +70,8 @@ pipeline {
                         sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml"
                     } else {
                         echo "Application du nouveau chart..."
-                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $KUBECONFIG_FILE"
+                        sh "helm install -f iac/values.yaml -f iac/environments/values.prod.yaml $chartName iac/ --kubeconfig $kubeConfig"
                     }
-                    sh "rm kubeconfig.yaml"
                 }
                 }
             }
