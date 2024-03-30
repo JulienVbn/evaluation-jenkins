@@ -55,12 +55,20 @@ pipeline {
         }
 
         stage('Deploy for staging') {
+            environment
+            {
+            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            }
             steps {
                 script {
                 sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
                 sed -i 's|julienvb/datascientest:movie-service|&-staging|' iac/values.yaml
                 sed -i 's|julienvb/datascientest:cast-service|&-staging|' iac/values.yaml
-                helm upgrade --install -f iac/values.yaml -f iac/environments/values.staging.yaml datascientest-evaluation-staging iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.staging.yaml datascientest-evaluation-staging iac/ --kubeconfig .kube/config
                 '''
                 }
             }
