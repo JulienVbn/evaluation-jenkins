@@ -2,9 +2,10 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = 'julienvb/datascientest'
-        DOCKER_TAG_CAST_SERVICE = 'cast-service-staging'
-        DOCKER_TAG_MOVIE_SERVICE = 'movie-service-staging'
+        DOCKER_ID = 'julienvb'
+        DOCKER_IMAGE = 'datascientest'
+        DOCKER_TAG_CAST_SERVICE = "cast-service-staging.v${BUILD_ID}.0"
+        DOCKER_TAG_MOVIE_SERVICE = "movie-service-staging.v${BUILD_ID}.0"
         DOCKER_USERNAME = 'julienvb'
     }
 
@@ -20,7 +21,7 @@ pipeline {
                 script {
                     sh '''
                     cd cast-service
-                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE .
+                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE .
                     '''
                 }
             }
@@ -31,7 +32,7 @@ pipeline {
                 script {
                     sh '''
                     cd movie-service
-                    docker build -t $DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE .
+                    docker build -t $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE .
                     '''
                 }
             }
@@ -46,8 +47,8 @@ pipeline {
                     sh '''
                     echo "$DOCKER_PASSWORD" > credentials.txt
                     cat credentials.txt | docker login -u $DOCKER_USERNAME --password-stdin
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE
-                    docker push $DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE
+                    docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG_CAST_SERVICE
+                    docker push $DOCKER_ID/$DOCKER_IMAGE:$DOCKER_TAG_MOVIE_SERVICE
                     rm credentials.txt
                     '''
                 }
@@ -65,8 +66,8 @@ pipeline {
                 mkdir .kube
                 ls
                 cat $KUBECONFIG > .kube/config
-                sed -i 's|julienvb/datascientest:movie-service|&-staging|' iac/values.yaml
-                sed -i 's|julienvb/datascientest:cast-service|&-staging|' iac/values.yaml
+                sed -i "s,${DOCKER_ID}\\/${DOCKER_IMAGE}:movie-service,${DOCKER_ID}\\/${DOCKER_IMAGE}:${DOCKER_TAG_MOVIE_SERVICE}," iac/values.yaml
+                sed -i "s,${DOCKER_ID}\\/${DOCKER_IMAGE}:cast-service,${DOCKER_ID}\\/${DOCKER_IMAGE}:${DOCKER_TAG_CAST_SERVICE}," iac/values.yaml
                 helm upgrade --install -f iac/values.yaml -f iac/environments/values.staging.yaml datascientest-evaluation-staging iac/ --kubeconfig .kube/config
                 '''
                 }
