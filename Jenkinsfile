@@ -69,7 +69,7 @@ pipeline {
                     mkdir .kube
                     ls
                     cat $KUBECONFIG > .kube/config
-                    sed -i "s|${DOCKER_ID}\\/${DOCKER_IMAGE}:movie-service|${DOCKER_ID}\\/${DOCKER_IMAGE}:${DOCKER_TAG_MOVIE_SERVICE}|" iac/values.yaml
+                    sed -i "s,${DOCKER_ID}\\/${DOCKER_IMAGE}:movie-service,${DOCKER_ID}\\/${DOCKER_IMAGE}:${DOCKER_TAG_MOVIE_SERVICE}," iac/values.yaml
                     sed -i "/^${DOCKER_ID}\\/${DOCKER_IMAGE}:cast-service/s/.*/${DOCKER_ID}\\/${DOCKER_IMAGE}:${DOCKER_TAG_CAST_SERVICE}/" iac/values.yaml
                     cat iac/values.yaml
                     helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig .kube/config
