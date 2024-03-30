@@ -55,8 +55,7 @@ pipeline {
         }
 
         stage('Deploy for dev') {
-            environment
-            {
+            environment {
             KUBECONFIG = credentials("config")
             }
             steps {
