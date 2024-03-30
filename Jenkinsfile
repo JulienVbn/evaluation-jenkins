@@ -64,7 +64,7 @@ pipeline {
                     input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     }
                 script {
-                    sh """
+                    sh '''
                     rm -Rf .kube
                     mkdir .kube
                     ls
@@ -72,7 +72,7 @@ pipeline {
                     sed -i '/^${DOCKER_ID}/${DOCKER_IMAGE}:movie-service/s/.*/${DOCKER_ID}/${DOCKER_IMAGE}:${DOCKER_TAG_MOVIE_SERVICE}/' iac/values.yaml
                     sed -i '/^${DOCKER_ID}/${DOCKER_IMAGE}:cast-service/s/.*/${DOCKER_ID}/${DOCKER_IMAGE}:${DOCKER_TAG_CAST_SERVICE}/' iac/values.yaml
                     helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig .kube/config
-                    """
+                    '''
                 }
             }
         }
