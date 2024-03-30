@@ -55,16 +55,23 @@ pipeline {
         }
 
         stage('Deploy for production') {
+            environment {
+                KUBECONFIG = credentials("kubeconfig")
+            }
             steps {
                     timeout(time: 15, unit: "MINUTES") {
                     input message: 'Do you want to deploy in production ?', ok: 'Yes'
                     }
                 script {
                     sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
                     sed -i 's|julienvb/datascientest:movie-service|&-prod|' iac/values.yaml
                     sed -i 's|julienvb/datascientest:cast-service|&-prod|' iac/values.yaml
-                    helm uninstall datascientest-evaluation-prod --kubeconfig /etc/rancher/k3s/k3s.yaml
-                    helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                    helm uninstall datascientest-evaluation-prod --kubeconfig .kube/config
+                    helm upgrade --install -f iac/values.yaml -f iac/environments/values.prod.yaml datascientest-evaluation-prod iac/ --kubeconfig .kube/config
                     '''
                 }
             }
