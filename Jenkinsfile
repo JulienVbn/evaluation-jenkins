@@ -57,21 +57,21 @@ pipeline {
         stage('Deploy for dev') {
             environment
             {
-            KUBECONFIG = credentials("config") // we retrieve  kubeconfig from secret file called config saved on jenkins
+            KUBECONFIG = credentials("config")
             }
-            steps {
-                script {
-                sh '''
-                rm -Rf .kube
-                mkdir .kube
-                ls
-                cat $KUBECONFIG > .kube/config
-                sed -i 's|julienvb/datascientest:movie-service|&-dev|' iac/values.yaml
-                sed -i 's|julienvb/datascientest:cast-service|&-dev|' iac/values.yaml
-                helm upgrade --install -f iac/values.yaml -f iac/environments/values.dev.yaml datascientest-evaluation-dev iac/ --kubeconfig .kube/config
-                '''
+                steps {
+                    script {
+                    sh '''
+                    rm -Rf .kube
+                    mkdir .kube
+                    ls
+                    cat $KUBECONFIG > .kube/config
+                    sed -i 's|julienvb/datascientest:movie-service|&-dev|' iac/values.yaml
+                    sed -i 's|julienvb/datascientest:cast-service|&-dev|' iac/values.yaml
+                    helm upgrade --install -f iac/values.yaml -f iac/environments/values.dev.yaml datascientest-evaluation-dev iac/ --kubeconfig .kube/config
+                    '''
+                    }
                 }
-            }
         }
     }
 }
