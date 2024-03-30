@@ -55,12 +55,19 @@ pipeline {
         }
 
         stage('Deploy for qa') {
+            environment {
+                KUBECONFIG = credentials("kubeconfig")
+            }
             steps {
                 script {
                 sh '''
+                rm -Rf .kube
+                mkdir .kube
+                ls
+                cat $KUBECONFIG > .kube/config
                 sed -i 's|julienvb/datascientest:movie-service|&-qa|' iac/values.yaml
                 sed -i 's|julienvb/datascientest:cast-service|&-qa|' iac/values.yaml
-                helm upgrade --install -f iac/values.yaml -f iac/environments/values.qa.yaml datascientest-evaluation-qa iac/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+                helm upgrade --install -f iac/values.yaml -f iac/environments/values.qa.yaml datascientest-evaluation-qa iac/ --kubeconfig .kube/config
                 '''
                 }
             }
